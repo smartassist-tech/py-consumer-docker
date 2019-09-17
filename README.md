@@ -5,13 +5,13 @@ Currently it only supports RabbitMq but more will be added soon.
 # Getting Started
 Add a Dockerfile in your consumer project root.
 ```
-FROM smartassist-tech/py-consumer-docker
+FROM smartassist/py-consumer:latest
 
 COPY ./ (Or any of your project folders) ./app
 
 ENV PROCESS_NUMBER # (Optional)Default is 1
 ENV RABBITMQ_URL # (Optional)Default is "amqp://guest:guest@localhost:5672/%2F"
-ENV CONSUMER_IMPORT_PATH # (Optional)Default is app.main.CONSUMERS
+ENV CONSUMER_IMPORT_PATH # (Optional)Default is example_app.main.CONSUMERS
 
 ```
 For importing the Consumers, at the above CONSUMER_IMPORT_PATH, add the following
@@ -67,3 +67,10 @@ OR
 pip install -r requirements.txt
 sudo python -m pytest tests/
 ```
+
+# Support
+Reach out to us at:
+
+abhishek@smartassist.tech
+
+stallon@smartassist.tech

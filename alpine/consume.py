@@ -6,8 +6,33 @@ from importlib import import_module
 import pika
 
 
-def _get_consumer_variables(name):
-    p, m = name.rsplit('.', 1)
+def _get_consumer_variables(path):
+    """
+    Imports the CONSUMERS variable from the path definition. The consumer variable is defines as follows:
+
+    Example:
+        def test_handler(message, queue_kwargs):
+            print('Consumer Receives')
+            print(message)
+
+
+        CONSUMERS = [
+
+            {
+                'queue': 'testing',
+                'handler': test_handler,
+                'decode_body': True,
+
+                # Queue Specific variables
+                'auto_ack': True
+            }
+        ]
+
+    :param path: Path to the CONSUMERS variable. For example,
+        `example_app.main.CONSUMERS` or `myapp.run.QUEUE_SETTINGS`
+    :return:
+    """
+    p, m = path.rsplit('.', 1)
 
     mod = import_module(p)
     met = getattr(mod, m)
@@ -16,6 +41,13 @@ def _get_consumer_variables(name):
 
 
 def get_rabbitmq_handler(handler, decode_body=True):
+    """
+
+    :param handler: The handler method to handle the message defined by the user. It is derived from the `CONSUMERS`
+        variable defined above
+    :param decode_body: Most queues return the body in byte format. By default the message is decoded and then returned.
+    :return: Returns a closure as defined below. This decodes the body and calls the original handler.
+    """
     decode_body = decode_body
     handler = handler
 
@@ -30,6 +62,10 @@ def get_rabbitmq_handler(handler, decode_body=True):
 
 
 def make_channel_rabbitmq():
+    """
+    Connect to a RabbitMQ server and consume queues based on definition in the `CONSUMERS` variable.
+    :return: Returns a `pika` channel.
+    """
     CONSUMERS = _get_consumer_variables(os.environ['CONSUMER_IMPORT_PATH'])
 
     connection = pika.BlockingConnection(
@@ -49,6 +85,9 @@ def make_channel_rabbitmq():
 
 
 while True:
+    # Make channel and consume continually
+    # TODO: Add clearer exception handling
+    # TODO: Add exception handler method hook defined by user
     channel = make_channel_rabbitmq()
 
     try:
