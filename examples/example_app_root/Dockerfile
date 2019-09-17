@@ -1,6 +1,6 @@
 FROM smartassist/py-consumer:latest
 
-ENV CONSUMER_IMPORT_PATH consumer.main.CONSUMERS
+ENV CONSUMER_IMPORT_PATH rabbitmq_consumer.run.CONSUMERS
 
 COPY ./requirements.txt /requirements.txt
 
