@@ -8,6 +8,15 @@ client = docker.from_env()
 
 
 def test_rabbit_consumption():
+    """
+    Test the containerized consumers.
+
+    1. We create the rabbitmq server and expose its main port.
+    2. We declare a sample queue `testing` and push a message.
+    3. The container is built and run. The container connects to the RabbitMQ Server, consumes the message prints the ouput.
+    4. The test is successful if the message printed matches the message we had initially sent.
+    :return:
+    """
     container_rabbit = client.containers.run('rabbitmq:alpine', ports={'5672': '5672'},
                                              name='rabbit', detach=True)
     time.sleep(12)
