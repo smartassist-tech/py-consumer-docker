@@ -74,3 +74,8 @@ Reach out to us at:
 abhishek@smartassist.tech
 
 stallon@smartassist.tech
+
+# Author
+Abhishek Jebaraj
+
+abhishekjebaraj@outlook.com
